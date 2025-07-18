@@ -1,4 +1,5 @@
 import os
+import oracledb
 
 FEATURE_FLAGS = {
     "ENABLE_TEMPLATE_PROCESSING": True,
