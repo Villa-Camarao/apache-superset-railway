@@ -4,42 +4,27 @@ FROM apache/superset:latest
 # Muda para o usuário root para poder instalar pacotes
 USER root
 
-# ---- Início: Instalação do Oracle Instant Client ----
-# Instala dependências necessárias para baixar, descompactar e executar o client Oracle
-RUN apt-get update && apt-get install -y wget unzip libaio1 && rm -rf /var/lib/apt/lists/*
-
-# Cria um diretório de trabalho padrão para software de terceiros
-WORKDIR /opt/oracle
-
-# Baixa o Oracle Instant Client. Esta é uma versão comum para Linux x64.
-# Verifique o site da Oracle se precisar de uma versão diferente.
-RUN wget https://download.oracle.com/otn_software/linux/instantclient/217000/instantclient-basic-linux.x64-21.7.0.0.dbru.zip
-
-# Descompacta o arquivo baixado
-RUN unzip instantclient-basic-linux.x64-21.7.0.0.dbru.zip
-
-# ADICIONA O DIRETÓRIO DO CLIENT AO CAMINHO DE BIBLIOTECAS DO SISTEMA
-# Esta é a linha mais importante, que resolve o erro "Cannot locate libclntsh.so"
-ENV LD_LIBRARY_PATH /opt/oracle/instantclient_21_7
-# Atualiza o cache do linker para que o sistema encontre a nova biblioteca
-RUN ldconfig
-
-# Retorna para o diretório de trabalho original da imagem do Superset
-WORKDIR /app
-# ---- Fim: Instalação do Oracle Instant Client ----
+# ---- Início: ADIÇÃO PARA MSSQL - Instalação do driver ODBC da Microsoft ----
+RUN apt-get update && apt-get install -y curl apt-transport-https gnupg
+RUN curl https://packages.microsoft.com/keys/microsoft.asc | apt-key add -
+RUN curl https://packages.microsoft.com/config/ubuntu/20.04/prod.list > /etc/apt/sources.list.d/mssql-release.list
+RUN apt-get update && ACCEPT_EULA=Y apt-get install -y msodbcsql17
+# ---- Fim: ADIÇÃO PARA MSSQL ----
 
 
-# Agora, continua com a instalação das outras dependências
+# Agora, instala as outras dependências de sistema
 RUN apt-get update && apt-get install -y \
     pkg-config \
     libmariadb-dev \
     default-libmysqlclient-dev \
     build-essential \
     libsasl2-dev \
+    unixodbc-dev \
     && rm -rf /var/lib/apt/lists/*
 
-# Instala os drivers Python, incluindo o cx_Oracle que você está usando
-RUN pip install mysqlclient psycopg2 pyhive cx_Oracle pyodbc PyAthena
+# Instala os drivers Python
+# ALTERADO: Trocamos cx_Oracle por oracledb (que não precisa do Instant Client)
+RUN pip install mysqlclient psycopg2 pyhive pyodbc PyAthena oracledb
 
 # Configura as variáveis de ambiente para a inicialização do Superset
 ENV ADMIN_USERNAME $ADMIN_USERNAME
