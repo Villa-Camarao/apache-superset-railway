@@ -11,6 +11,23 @@ RUN curl https://packages.microsoft.com/config/ubuntu/20.04/prod.list > /etc/apt
 RUN apt-get update && ACCEPT_EULA=Y apt-get install -y msodbcsql17
 # ---- Fim: ADIÇÃO PARA MSSQL ----
 
+# ---- Início: Instalação do Oracle Instant Client (com o novo link funcional) ----
+# Instala dependências para descompactar e executar o client
+RUN apt-get update && apt-get install -y wget unzip libaio1 && rm -rf /var/lib/apt/lists/*
+# Entra no diretório de destino
+WORKDIR /opt/oracle
+# ATUALIZADO: Usa o novo link que você forneceu para a versão 21.19
+RUN wget https://download.oracle.com/otn_software/linux/instantclient/2119000/instantclient-basic-linux.x64-21.19.0.0.0dbru.zip
+# ATUALIZADO: Descompacta o novo nome de arquivo
+RUN unzip instantclient-basic-linux.x64-21.19.0.0.0dbru.zip
+# ATUALIZADO: Aponta para o novo nome do diretório (instantclient_21_19)
+ENV LD_LIBRARY_PATH /opt/oracle/instantclient_21_19
+# Atualiza o cache do linker
+RUN ldconfig
+
+# Retorna para o diretório de trabalho original do Superset
+WORKDIR /app
+# ---- Fim: Instalação do Oracle Instant Client ----
 
 # Agora, instala as outras dependências de sistema
 RUN apt-get update && apt-get install -y \
