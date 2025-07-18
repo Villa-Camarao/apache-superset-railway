@@ -41,7 +41,7 @@ RUN apt-get update && apt-get install -y \
 
 # Instala os drivers Python
 # ALTERADO: Trocamos cx_Oracle por oracledb (que não precisa do Instant Client)
-RUN pip install mysqlclient psycopg2 pyhive pyodbc PyAthena "oracledb<2.0.0"
+RUN pip install mysqlclient psycopg2 pyhive pyodbc PyAthena cx_Oracle
 
 # Configura as variáveis de ambiente para a inicialização do Superset
 ENV ADMIN_USERNAME $ADMIN_USERNAME
