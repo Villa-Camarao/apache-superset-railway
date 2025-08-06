@@ -17,9 +17,11 @@ RUN apt-get update && apt-get install -y wget unzip libaio1 && rm -rf /var/lib/a
 # Entra no diretório de destino
 WORKDIR /opt/oracle
 # ATUALIZADO: Usa o novo link que você forneceu para a versão 21.19
-RUN wget https://download.oracle.com/otn_software/linux/instantclient/2119000/instantclient-basic-linux.x64-21.19.0.0.0dbru.zip
+# RUN wget https://download.oracle.com/otn_software/linux/instantclient/2119000/instantclient-basic-linux.x64-21.19.0.0.0dbru.zip
+RUN wget https://download.oracle.com/otn_software/linux/instantclient/instantclient-basic-linuxx64.zip
 # ATUALIZADO: Descompacta o novo nome de arquivo
-RUN unzip instantclient-basic-linux.x64-21.19.0.0.0dbru.zip
+# RUN unzip instantclient-basic-linux.x64-21.19.0.0.0dbru.zip
+RUN unzip instantclient-basic-linuxx64.zip
 # ATUALIZADO: Aponta para o novo nome do diretório (instantclient_21_19)
 ENV LD_LIBRARY_PATH /opt/oracle/instantclient_21_19
 # Atualiza o cache do linker
