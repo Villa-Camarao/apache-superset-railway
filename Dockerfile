@@ -43,8 +43,6 @@ RUN apt-get update && apt-get install -y \
     python3-dev \
     && rm -rf /var/lib/apt/lists/*
 
-# Retorna para o usuário não-privilegiado 'superset' por segurança
-USER superset
 
 # Instala os drivers Python
 RUN pip install --upgrade pip
@@ -69,7 +67,8 @@ COPY /config/superset_config.py /app/
 ENV SUPERSET_CONFIG_PATH /app/superset_config.py
 ENV SECRET_KEY $SECRET_KEY
 
-
+# Retorna para o usuário não-privilegiado 'superset' por segurança
+USER superset
 
 # Define o ponto de entrada do container
 ENTRYPOINT [ "./superset_init.sh" ]
