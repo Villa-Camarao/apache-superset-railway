@@ -39,6 +39,8 @@ RUN apt-get update && apt-get install -y \
     build-essential \
     libsasl2-dev \
     unixodbc-dev \
+    libpq-dev \
+    python3-dev \
     && rm -rf /var/lib/apt/lists/*
 
 # Instala os drivers Python
