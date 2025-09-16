@@ -43,8 +43,12 @@ RUN apt-get update && apt-get install -y \
     python3-dev \
     && rm -rf /var/lib/apt/lists/*
 
+# Retorna para o usuário não-privilegiado 'superset' por segurança
+USER superset
+
 # Instala os drivers Python
 RUN pip install --upgrade pip
+
 # ALTERADO: Trocamos cx_Oracle por oracledb (que não precisa do Instant Client)
 RUN pip install psycopg2==2.9.10
 RUN pip install mysqlclient pyhive pyodbc PyAthena cx_Oracle
@@ -65,8 +69,7 @@ COPY /config/superset_config.py /app/
 ENV SUPERSET_CONFIG_PATH /app/superset_config.py
 ENV SECRET_KEY $SECRET_KEY
 
-# Retorna para o usuário não-privilegiado 'superset' por segurança
-USER superset
+
 
 # Define o ponto de entrada do container
 ENTRYPOINT [ "./superset_init.sh" ]
