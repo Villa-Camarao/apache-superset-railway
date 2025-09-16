@@ -50,7 +50,7 @@ RUN pip install --upgrade pip
 # ALTERADO: Trocamos cx_Oracle por oracledb (que não precisa do Instant Client)
 RUN pip install psycopg2==2.9.10
 RUN pip install mysqlclient pyhive pyodbc PyAthena cx_Oracle
-RUN pip install prophet
+# RUN pip install prophet
 
 # Configura as variáveis de ambiente para a inicialização do Superset
 ENV ADMIN_USERNAME $ADMIN_USERNAME
