@@ -42,6 +42,7 @@ RUN apt-get update && apt-get install -y \
     && rm -rf /var/lib/apt/lists/*
 
 # Instala os drivers Python
+RUN pip install --upgrade pip
 # ALTERADO: Trocamos cx_Oracle por oracledb (que não precisa do Instant Client)
 RUN pip install psycopg2==2.9.10
 RUN pip install mysqlclient pyhive pyodbc PyAthena cx_Oracle
