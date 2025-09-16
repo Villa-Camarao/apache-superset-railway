@@ -67,8 +67,8 @@ COPY /config/superset_config.py /app/
 ENV SUPERSET_CONFIG_PATH /app/superset_config.py
 ENV SECRET_KEY $SECRET_KEY
 
-# Retorna para o usuário não-privilegiado 'superset' por segurança
-USER superset
-
 # Define o ponto de entrada do container
 ENTRYPOINT [ "./superset_init.sh" ]
+
+# Retorna para o usuário não-privilegiado 'superset' por segurança
+USER superset
