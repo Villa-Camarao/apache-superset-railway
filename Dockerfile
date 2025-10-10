@@ -72,4 +72,4 @@ ENV SECRET_KEY $SECRET_KEY
 ENTRYPOINT [ "./superset_init.sh" ]
 
 # Retorna para o usuário não-privilegiado 'superset' por segurança
-USER superset
+# USER superset
